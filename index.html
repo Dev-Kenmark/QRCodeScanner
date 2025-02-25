@@ -1,22 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vehicle Identification Certificate</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"></script>
   <style>
+    :root {
+      --bg-primary: #f5f5f5;
+      --bg-card: #ffffff;
+      --bg-section: #f9f9f9;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --accent-color: #1e88e5;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --scanner-bg: #f8f9fa;
+      --result-bg: #f0f8ff;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #121212;
+      --bg-card: #1e1e1e;
+      --bg-section: #252525;
+      --text-primary: #e0e0e0;
+      --text-secondary: #b0b0b0;
+      --accent-color: #64b5f6;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --scanner-bg: #252525;
+      --result-bg: #1a2737;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: var(--bg-primary);
       margin: 0;
       padding: 15px;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
     }
 
     .certificate-container {
-      background-color: white;
+      background-color: var(--bg-card);
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px var(--border-color);
       width: 100%;
       max-width: 1000px;
       padding: 20px;
@@ -32,22 +58,43 @@
     }
 
     .logo {
-      color: #1e88e5;
+      color: var(--accent-color);
       font-size: 28px;
       font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--bg-section);
     }
 
     .exit-button {
       display: flex;
       align-items: center;
-      color: #333;
+      color: var(--text-primary);
       text-decoration: none;
       font-size: 16px;
     }
 
     .exit-icon {
       margin-right: 5px;
-      border: 2px solid #333;
+      border: 2px solid var(--text-primary);
       border-radius: 50%;
       width: 24px;
       height: 24px;
@@ -64,6 +111,7 @@
     .title h1 {
       margin: 0;
       font-size: 24px;
+      color: var(--text-primary);
     }
 
     @media (max-width: 600px) {
@@ -73,12 +121,12 @@
     }
 
     .title h1 .blue-text {
-      color: #1e88e5;
+      color: var(--accent-color);
     }
 
     .title p {
       margin: 5px 0 0;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .content {
@@ -90,7 +138,7 @@
     .data-section {
       flex: 1;
       min-width: 250px;
-      background-color: #f9f9f9;
+      background-color: var(--bg-section);
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 15px;
@@ -100,7 +148,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
-      color: #1e88e5;
+      color: var(--accent-color);
       font-size: 16px;
       font-weight: bold;
     }
@@ -117,10 +165,11 @@
       font-weight: bold;
       margin-bottom: 3px;
       font-size: 14px;
+      color: var(--text-primary);
     }
 
     .field-value {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
       word-break: break-word;
     }
@@ -139,14 +188,20 @@
     }
 
     .action-button {
-      background-color: white;
-      border: 1px solid #1e88e5;
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
       border-radius: 20px;
-      color: #1e88e5;
+      color: var(--accent-color);
       padding: 8px 15px;
       text-decoration: none;
       font-size: 14px;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-button:hover {
+      background-color: var(--accent-color);
+      color: white;
     }
 
     /* Card styles */
@@ -160,9 +215,9 @@
     .card {
       flex: 1;
       min-width: 250px;
-      background-color: white;
+      background-color: var(--bg-card);
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px var(--border-color);
       padding: 15px;
       transition: transform 0.2s;
     }
@@ -173,7 +228,7 @@
 
     .card-icon {
       font-size: 22px;
-      color: #1e88e5;
+      color: var(--accent-color);
       margin-bottom: 10px;
     }
 
@@ -181,11 +236,11 @@
       font-size: 16px;
       font-weight: bold;
       margin-bottom: 8px;
-      color: #333;
+      color: var(--text-primary);
     }
 
     .card-text {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
     }
 
@@ -193,12 +248,16 @@
     .qr-scanner {
       width: 100%;
       padding: 15px;
-      background-color: #f8f9fa;
+      background-color: var(--scanner-bg);
       border-radius: 8px;
       margin-top: 10px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px var(--border-color);
       display: none;
+    }
+
+    .qr-scanner h3 {
+      color: var(--text-primary);
     }
 
     #qr-reader {
@@ -218,24 +277,35 @@
     .scanner-result {
       margin-top: 15px;
       padding: 15px;
-      background-color: #f0f8ff;
+      background-color: var(--result-bg);
       border-radius: 5px;
-      border-left: 4px solid #1e88e5;
+      border-left: 4px solid var(--accent-color);
       display: none;
+      color: var(--text-primary);
     }
 
-    /* Fix for HTML5 QR scanner UI */
+    /* Fix for HTML5 QR scanner UI in both themes */
+    #qr-reader__dashboard_section {
+      background-color: var(--bg-section) !important;
+    }
+
     #qr-reader__status_span {
-      background-color: #1e88e5 !important;
+      background-color: var(--accent-color) !important;
       color: white !important;
     }
 
     #qr-reader__dashboard button {
-      border: 1px solid #1e88e5 !important;
-      background-color: white !important;
-      color: #1e88e5 !important;
+      border: 1px solid var(--accent-color) !important;
+      background-color: var(--bg-card) !important;
+      color: var(--accent-color) !important;
       border-radius: 4px !important;
       padding: 5px 10px !important;
+    }
+
+    #qr-reader select {
+      background-color: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-color) !important;
     }
   </style>
 </head>
@@ -243,10 +313,15 @@
   <div class="certificate-container">
     <div class="header">
       <div class="logo">LOGO</div>
-      <a href="#" class="exit-button">
-        <div class="exit-icon">⟩</div>
-        Exit
-      </a>
+      <div class="controls">
+        <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">
+          ☀️
+        </button>
+        <a href="#" class="exit-button">
+          <div class="exit-icon">⟩</div>
+          Exit
+        </a>
+      </div>
     </div>
 
     <div class="title">
@@ -356,10 +431,46 @@
   </div>
 
   <script>
+    // Theme toggle functionality
+    function initTheme() {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const htmlElement = document.documentElement;
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      // Check for saved theme preference or use system preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+      } else if (prefersDarkScheme.matches) {
+        htmlElement.setAttribute('data-theme', 'dark');
+        updateThemeIcon('dark');
+      }
+      
+      // Theme toggle click handler
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+      });
+    }
+    
+    // Update the theme toggle icon
+    function updateThemeIcon(theme) {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      themeToggleBtn.innerHTML = theme === 'dark' ? '🌙' : '☀️';
+      themeToggleBtn.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    
+    // Initialize theme on page load
+    document.addEventListener('DOMContentLoaded', initTheme);
+
     // Function to toggle scanner visibility within the card container
     function toggleScanner() {
       const scannerContainer = document.getElementById('scanner-container');
-      const scanCard = document.getElementById('scan-card');
       const toggleBtn = document.getElementById('scanner-toggle-btn');
       
       if (scannerContainer.style.display === 'block') {
